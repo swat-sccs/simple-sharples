@@ -89,24 +89,27 @@ function parseMeal(meal: RawMeal): Meal {
     enddate,
     short_time: `${startdate.toFormat('h:mm')} to ${enddate.toFormat('h:mm')}`,
     short_date: startdate.toFormat('ccc M/d'),
-    // split on <br> and newlines
+    // split on the </span> that indicates the start of a new menu block
+    // use the ending </span> to insert a comma instead
     items: meal.description
-      .split(/<\s*\/?\s*(?:(?:br)|(?:li))\s*\/?\s*>/)
+      .replace(/<\/span>/g, ": ")
+      .split(/<span\s[^>]+>/)
       .map((item) =>
         decode(stripHtmlTags(item))
           .trim()
-          .replace(/::(.*?)::/g, function (dietary) {
+          // note the leading space here; makes it nicer when removing tags we don't recognize
+          .replace(/ ::(.*?)::/g, function (dietary) {
             switch (dietary) {
-              case '::vegan::':
-                return '(v)'
-              case '::vegetarian::':
-                return '(vg)'
-              case '::kosher::':
-                return '(k)'
-              case '::halal::':
-                return '(h)'
-              case '::gluten-free::':
-                return '(gf)'
+              case ' ::vegan::':
+                return ' (v)'
+              case ' ::vegetarian::':
+                return ' (vg)'
+              case ' ::kosher::':
+                return ' (k)'
+              case ' ::halal::':
+                return ' (h)'
+              case ' ::gluten free::':
+                return ' (gf)'
               default:
                 return ''
             }
