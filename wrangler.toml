@@ -1,10 +1,9 @@
-name = "sharples"
+name = "dining"
 type = "javascript"
 zone_id = "863055e79949c3d47633d0fa7efe7d59"
-account_id = "4a669528893fa80a9c36ceb3fe466b34"
-route = "sharples.jse.li/*"
+account_id = "8afed8f4b546fbf47703447aec704351"
 workers_dev = true
-compatibility_date = "2022-01-20"
+compatibility_date = "2022-10-16"
 
 [build]
 command = "npm install && npm run build"
