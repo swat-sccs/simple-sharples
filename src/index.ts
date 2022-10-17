@@ -100,7 +100,7 @@ function parseMeal(meal: RawMeal): Meal {
 
   const main1 = '<abbr title="Classics">Main 1</abbr>'
   const main2 = '<abbr title="World of Flavor">Main 2</abbr>'
-  const main3 = '<abbr title="Spice">Main 3</abbr>'
+  const main3 = '<abbr title="Spice of Life">Main 3</abbr>'
   const veganMain = '<abbr title="Verdant & Vegan">Vegan Main</abbr>'
   const dessert = '<abbr title="Daily Kneads">Dessert</abbr>'
   const allergen = '<abbr title="Free Zone">Allergen Choice</abbr>'
@@ -138,11 +138,11 @@ function parseMeal(meal: RawMeal): Meal {
           .replace(/::alcohol::/g, alcohol)
           .replace(/ ::.*?::/g, '')
           .replace(/Classics/g, main1)
-          .replace(/World of Flavor/g, main2)
+          .replace(/World (?:of )?Flavor/g, main2)
           .replace(/Verdant & Vegan/g, veganMain)
           .replace(/Daily Kneads/g, dessert)
           .replace(/Free Zone/g, allergen)
-          .replace(/Spice/g, main3),
+          .replace(/Spice(?: of Life)?/g, main3),
       )
       .filter((m) => !exclude.some(exclusion => m.startsWith(exclusion)))
       .filter((m) => !!m)
