@@ -83,6 +83,32 @@ function parseMeal(meal: RawMeal): Meal {
   const startdate = DateTime.fromISO(meal.startdate)
   const enddate = DateTime.fromISO(meal.enddate)
 
+  // definition of the HTML dietary tags
+  // adapted from the chrome extension https://github.com/swat-sccs/sharples-chrome-extension
+  const vegan = '<abbr class="tag vegan" title="Vegan">(v)</abbr>'
+  const halal = '<abbr class="tag halal" title="Halal">(h)</abbr>'
+  const veget = '<abbr class="tag veget" title="Vegetarian">(vg)</abbr>'
+  // extra dietary tags
+  const egg = '<abbr class="tag egg" title="Egg">(e)</abbr>'
+  const milk = '<abbr class="tag milk" title="Milk">(m)</abbr>'
+  const soy = '<abbr class="tag soy" title="Soy">(s)</abbr>'
+  const wheat = '<abbr class="tag wheat" title="Wheat">(w)</abbr>'
+  const fish = '<abbr class="tag fish" title="Fish">(f)</abbr>'
+  const glutenfree = '<abbr class="tag gf" title="Gluten Free">(gf)</abbr>'
+  const sesame = '<abbr class="tag sesame" title="Sesame">(ses)</abbr>'
+  const alcohol = '<abbr class="tag alcohol" title="Alcohol">(a)</abbr>'
+
+  // order for presentation
+  const order = [
+    'Main 1',
+    'Main 2',
+    'Main 3',
+    'Vegan Main',
+    'Allergen Choice',
+    'Dessert',
+  ]
+  const exclude = ['Fired Up', 'Field of Greens', "Grillin' Out"]
+
   return {
     title: meal.title,
     startdate,
@@ -92,30 +118,37 @@ function parseMeal(meal: RawMeal): Meal {
     // split on the </span> that indicates the start of a new menu block
     // use the ending </span> to insert a comma instead
     items: meal.description
-      .replace(/<\/span>/g, ": ")
+      .replace(/<\/span>/g, ': ')
       .split(/<span\s[^>]+>/)
       .map((item) =>
         decode(stripHtmlTags(item))
           .trim()
-          // note the leading space here; makes it nicer when removing tags we don't recognize
-          .replace(/ ::(.*?)::/g, function (dietary) {
-            switch (dietary) {
-              case ' ::vegan::':
-                return ' (v)'
-              case ' ::vegetarian::':
-                return ' (vg)'
-              case ' ::kosher::':
-                return ' (k)'
-              case ' ::halal::':
-                return ' (h)'
-              case ' ::gluten free::':
-                return ' (gf)'
-              default:
-                return ''
-            }
-          }),
+          .replace(/::vegan::/g, vegan)
+          .replace(/::halal::/g, halal)
+          .replace(/::vegetarian::/g, veget)
+          .replace(/::egg::/g, egg)
+          .replace(/::milk::/g, milk)
+          .replace(/::soy::/g, soy)
+          .replace(/::wheat::/g, wheat)
+          .replace(/::fish::/g, fish)
+          .replace(/::gluten free::/g, glutenfree)
+          .replace(/::sesame::/g, sesame)
+          .replace(/::alcohol::/g, alcohol)
+          .replace(/ ::.*?::/g, '')
+          .replace(/Classics/g, 'Main 1')
+          .replace(/World of Flavor/g, 'Main 2')
+          .replace(/Verdant & Vegan/g, 'Vegan Main')
+          .replace(/Daily Kneads/g, 'Dessert')
+          .replace(/Free Zone/g, 'Allergen Choice')
+          .replace(/Spice/g, 'Main 3'),
       )
-      .filter((m) => !!m),
+      .filter((m) => !exclude.some(exclusion => m.startsWith(exclusion)))
+      .filter((m) => !!m)
+      .sort(
+        (i1, i2) =>
+          order.findIndex((value) => i1.startsWith(value)) -
+          order.findIndex((value) => i2.startsWith(value)),
+      ),
   }
 }
 
