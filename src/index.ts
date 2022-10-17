@@ -98,14 +98,16 @@ function parseMeal(meal: RawMeal): Meal {
   const sesame = '<abbr class="tag sesame" title="Sesame">(ses)</abbr>'
   const alcohol = '<abbr class="tag alcohol" title="Alcohol">(a)</abbr>'
 
+  const main1 = '<abbr title="Classics">Main 1</abbr>'
+  const main2 = '<abbr title="World of Flavor">Main 2</abbr>'
+  const main3 = '<abbr title="Spice">Main 3</abbr>'
+  const veganMain = '<abbr title="Verdant & Vegan">Vegan Main</abbr>'
+  const dessert = '<abbr title="Daily Kneads">Dessert</abbr>'
+  const allergen = '<abbr title="Free Zone">Allergen Choice</abbr>'
+
   // order for presentation
   const order = [
-    'Main 1',
-    'Main 2',
-    'Main 3',
-    'Vegan Main',
-    'Allergen Choice',
-    'Dessert',
+    main1, main2, main3, veganMain, allergen, dessert
   ]
   const exclude = ['Fired Up', 'Field of Greens', "Grillin' Out"]
 
@@ -135,12 +137,12 @@ function parseMeal(meal: RawMeal): Meal {
           .replace(/::sesame::/g, sesame)
           .replace(/::alcohol::/g, alcohol)
           .replace(/ ::.*?::/g, '')
-          .replace(/Classics/g, 'Main 1')
-          .replace(/World of Flavor/g, 'Main 2')
-          .replace(/Verdant & Vegan/g, 'Vegan Main')
-          .replace(/Daily Kneads/g, 'Dessert')
-          .replace(/Free Zone/g, 'Allergen Choice')
-          .replace(/Spice/g, 'Main 3'),
+          .replace(/Classics/g, main1)
+          .replace(/World of Flavor/g, main2)
+          .replace(/Verdant & Vegan/g, veganMain)
+          .replace(/Daily Kneads/g, dessert)
+          .replace(/Free Zone/g, allergen)
+          .replace(/Spice/g, main3),
       )
       .filter((m) => !exclude.some(exclusion => m.startsWith(exclusion)))
       .filter((m) => !!m)
