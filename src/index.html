@@ -6,6 +6,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script defer data-domain="dining.sccs.sh" src="https://plausible.sccs.swarthmore.edu/js/pls.js"></script>
   <title>dining.sccs.sh {{date}}</title>
+  <style>
+    html {
+      font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+    ul {
+      line-height: 1.4;
+    }
+
+    #upcoming {
+      table-layout: fixed;
+    }
+
+    #upcoming-date {
+      width: 10%;
+    }
+    #upcoming-lunch {
+      width: 45%;
+    }
+    #upcoming-dinner {
+      width: 45%;
+    }
+  </style>
 </head>
 <body>
   <h1>Food on {{date}}</h1>
@@ -22,11 +44,11 @@
 
   <details>
     <summary>Next couple of days</summary>
-    <table border="1">
+    <table border="1" id="upcoming">
       <tr>
-        <th>Date</th>
-        <th>Lunch</th>
-        <th>Dinner</th>
+        <th id="upcoming-date">Date</th>
+        <th id="upcoming-lunch">Lunch</th>
+        <th id="upcoming-dinner">Dinner</th>
       </tr>
       {{#upcoming}}
       <tr>
