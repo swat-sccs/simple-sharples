@@ -1,5 +1,6 @@
 name = "dining"
 type = "javascript"
+main = "./src/index.ts"
 zone_id = "863055e79949c3d47633d0fa7efe7d59"
 account_id = "8afed8f4b546fbf47703447aec704351"
 workers_dev = true
