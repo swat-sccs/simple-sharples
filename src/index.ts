@@ -102,14 +102,13 @@ function parseMeal(meal: RawMeal): Meal {
   const main2 = '<abbr title="World of Flavor">Main 2</abbr>'
   const main3 = '<abbr title="Spice of Life">Main 3</abbr>'
   const veganMain = '<abbr title="Verdant & Vegan">Vegan Main</abbr>'
+  const salad = '<abbr title="Field of Greens">Salad</abbr>'
   const dessert = '<abbr title="Daily Kneads">Dessert</abbr>'
   const allergen = '<abbr title="Free Zone">Allergen Choice</abbr>'
 
   // order for presentation
-  const order = [
-    main1, main2, main3, veganMain, allergen, dessert
-  ]
-  const exclude = ['Fired Up', 'Field of Greens', "Grillin' Out"]
+  const order = [main1, main2, main3, veganMain, allergen, salad, dessert]
+  const exclude = ['Fired Up', "Grillin' Out"]
 
   return {
     title: meal.title,
@@ -142,10 +141,17 @@ function parseMeal(meal: RawMeal): Meal {
           .replace(/Verdant & Vegan/g, veganMain)
           .replace(/Daily Kneads/g, dessert)
           .replace(/Free Zone/g, allergen)
-          .replace(/Spice(?: of Life)?/g, main3),
+          .replace(/Spice(?: of Life)?/g, main3)
+          .replace(/Field of Greens?/g, salad),
       )
-      .filter((m) => !exclude.some(exclusion => m.startsWith(exclusion)))
+      .filter((m) => !exclude.some((exclusion) => m.startsWith(exclusion)))
       .filter((m) => !!m)
+      .map((item) => {
+        // reverse the actual items in the menu, since for some reason they're presented with the 
+        // actual entree item last most of the time
+        const titleAndItems = item.split(': ')
+        return `${titleAndItems[0]}: ${titleAndItems[1].split(', ').reverse().join(', ')}`
+      })
       .sort(
         (i1, i2) =>
           order.findIndex((value) => i1.startsWith(value)) -
