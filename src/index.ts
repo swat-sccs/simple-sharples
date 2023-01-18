@@ -147,10 +147,15 @@ function parseMeal(meal: RawMeal): Meal {
       .filter((m) => !exclude.some((exclusion) => m.startsWith(exclusion)))
       .filter((m) => !!m)
       .map((item) => {
-        // reverse the actual items in the menu, since for some reason they're presented with the 
+        // reverse the actual items in the menu, since for some reason they're presented with the
         // actual entree item last most of the time
+        // and strip leading ampersands from items
         const titleAndItems = item.split(': ')
-        return `${titleAndItems[0]}: ${titleAndItems[1].split(', ').reverse().join(', ')}`
+        return `${titleAndItems[0]}: ${titleAndItems[1]
+          .split(', ')
+          .map((i) => i.replace(/^& /, ''))
+          .reverse()
+          .join(', ')}`
       })
       .sort(
         (i1, i2) =>
