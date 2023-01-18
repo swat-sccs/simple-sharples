@@ -31,6 +31,9 @@
 </head>
 <body>
   <h1>Food on {{date}}</h1>
+  {{#breakfast}}
+    <p>Breakfast from {{.}}</p>
+  {{/breakfast}}
   {{#today}}
   <h2>{{title}} ({{short_time}})</h2>
   <ul>

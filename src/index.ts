@@ -225,6 +225,10 @@ async function handleRequest(event: Event): Promise<Response> {
 
   console.log(JSON.stringify(rsp))
 
+  const breakfast = rsp.data.today.data
+    .filter((m: RawMeal) => m.title == 'Breakfast')
+    .map(parseMeal)
+    .map((m: Meal) => m.short_time)[0]
   const today = parseAndFilterMeals(rsp.data.today.data)
   const upcoming = groupMealsByDay(parseAndFilterMeals(rsp.data.upcoming.data))
   const essies = parseEssies(rsp.data.essies.data)
@@ -232,6 +236,7 @@ async function handleRequest(event: Event): Promise<Response> {
   return new Response(
     Mustache.render(indexPage, {
       date: now.toFormat('MMM d'),
+      breakfast,
       today,
       upcoming,
       essies,
