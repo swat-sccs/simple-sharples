@@ -98,13 +98,13 @@ function parseMeal(meal: RawMeal): Meal {
   const sesame = '<abbr class="tag sesame" title="Sesame">(ses)</abbr>'
   const alcohol = '<abbr class="tag alcohol" title="Alcohol">(a)</abbr>'
 
-  const main1 = '<abbr title="Classics">Main 1</abbr>'
-  const main2 = '<abbr title="World of Flavor">Main 2</abbr>'
-  const main3 = '<abbr title="Spice of Life">Main 3</abbr>'
-  const veganMain = '<abbr title="Verdant & Vegan">Vegan Main</abbr>'
-  const salad = '<abbr title="Field of Greens">Salad</abbr>'
-  const dessert = '<abbr title="Daily Kneads">Dessert</abbr>'
-  const allergen = '<abbr title="Free Zone">Allergen Choice</abbr>'
+  const main1 = '<abbr title="Classics">Main 1</abbr>:'
+  const main2 = '<abbr title="World of Flavor">Main 2</abbr>:'
+  const main3 = '<abbr title="Spice of Life">Main 3</abbr>:'
+  const veganMain = '<abbr title="Verdant & Vegan">Vegan Main</abbr>:'
+  const salad = '<abbr title="Field of Greens">Salad</abbr>:'
+  const dessert = '<abbr title="Daily Kneads">Dessert</abbr>:'
+  const allergen = '<abbr title="Free Zone">Allergen Choice</abbr>:'
 
   // order for presentation
   const order = [main1, main2, main3, veganMain, allergen, salad, dessert]
@@ -136,13 +136,13 @@ function parseMeal(meal: RawMeal): Meal {
           .replace(/::sesame::/g, sesame)
           .replace(/::alcohol::/g, alcohol)
           .replace(/ ::.*?::/g, '')
-          .replace(/Classics/g, main1)
-          .replace(/World (?:of )?Flavor/g, main2)
-          .replace(/Verdant & Vegan/g, veganMain)
-          .replace(/Daily Kneads/g, dessert)
-          .replace(/Free Zone/g, allergen)
-          .replace(/Spice(?: of Life)?/g, main3)
-          .replace(/Field of Greens?/g, salad),
+          .replace(/Classics:/g, main1)
+          .replace(/World (?:of )?Flavor:/g, main2)
+          .replace(/Verdant & Vegan:/g, veganMain)
+          .replace(/Daily Kneads:/g, dessert)
+          .replace(/Free Zone:/g, allergen)
+          .replace(/Spice(?: of Life)?:/g, main3)
+          .replace(/Field of Greens?:/g, salad),
       )
       .filter((m) => !exclude.some((exclusion) => m.startsWith(exclusion)))
       .filter((m) => !!m)
