@@ -254,7 +254,7 @@ function parseEssies(meals: RawMeal[]): string | undefined {
   return stripHtmlTags(food).trim()
 }
 
-async function handleRequest(event: Event): Promise<Response> {
+async function handleRequest(event: FetchEvent): Promise<Response> {
   const now = DateTime.now()
 
   const url = new URL('https://dash.swarthmore.edu/graphql')
@@ -271,13 +271,24 @@ async function handleRequest(event: Event): Promise<Response> {
 
   const rsp = (await (await fetch(url.toString())).json()) as any
 
-  console.log(JSON.stringify(rsp))
+  // console.log(JSON.stringify(rsp))
 
   const breakfast = rsp.data.today.data
     .filter((m: RawMeal) => m.title == 'Breakfast')
     .map(parseMeal)
     .map((m: Meal) => m.short_time)[0]
   const today = parseAndFilterMeals(rsp.data.today.data)
+
+  // handle API requests
+  if (new URL(event.request.url).pathname == "/api") {
+    return new Response(JSON.stringify({
+      lunch_time: today[0].short_time,
+      lunch: today[0].items.map(i => stripHtmlTags(i)),
+      dinner_time: today[1].short_time,
+      dinner: today[1].items.map(i => stripHtmlTags(i))
+    }))
+  }
+
   const upcoming = groupMealsByDay(parseAndFilterMeals(rsp.data.upcoming.data))
   const essies = parseEssies(rsp.data.essies.data)
 
