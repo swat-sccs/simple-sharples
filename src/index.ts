@@ -79,6 +79,48 @@ function stripHtmlTags(s: string): string {
   return s.replace(/<\/?[^>]+(>|$)/g, '')
 }
 
+function sortMains(lst: string[]): string[] {
+  const keywords = [
+    'chicken',
+    'steak',
+    'beef',
+    'shrimp',
+    'tofu',
+    'seitan',
+    'bacon',
+    'sausage',
+    'pork',
+    'meatball',
+    'tilapia',
+    'salmon',
+    'wing',
+    'pizza',
+    'fried rice',
+  ]
+
+  const items = new Set(lst)
+  
+  // this algorithm will, if there are multiple proteins on the list, order them by their ordering
+  // in the keyword list
+  // yes this is O(N^2) but it's fine
+
+  const newLst: string[] = []
+  for (const keyword of keywords) {
+    for (const item of items) {
+      if (item.toLowerCase().includes(keyword)) {
+        items.delete(item)
+        newLst.push(item.trim())
+      }
+    }
+  }
+
+  for (const item of items) {
+    newLst.push(item.trim())
+  }
+
+  return newLst
+}
+
 function parseMeal(meal: RawMeal): Meal {
   const startdate = DateTime.fromISO(meal.startdate)
   const enddate = DateTime.fromISO(meal.enddate)
@@ -151,11 +193,13 @@ function parseMeal(meal: RawMeal): Meal {
         // actual entree item last most of the time
         // and strip leading ampersands from items
         const titleAndItems = item.split(': ')
-        return `${titleAndItems[0]}: ${titleAndItems[1]
-          .split(', ')
-          .map((i) => i.replace(/^& /, ''))
-          .reverse()
-          .join(', ')}`
+        const title = titleAndItems[0]
+        const items = titleAndItems[1]
+
+        const processedItems = sortMains(
+          items.split(', ').map((i) => i.replace(/^& /, '')),
+        ).join(', ')
+        return `${title}: ${processedItems}`
       })
       .sort(
         (i1, i2) =>
