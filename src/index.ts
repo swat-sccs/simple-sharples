@@ -95,6 +95,7 @@ function sortMains(lst: string[]): string[] {
     'salmon',
     'wing',
     'pizza',
+    'pasta',
     'fried rice',
   ]
 
@@ -109,7 +110,7 @@ function sortMains(lst: string[]): string[] {
     for (const item of items) {
       if (item.toLowerCase().includes(keyword)) {
         items.delete(item)
-        newLst.push(item.trim())
+        newLst.push(`<strong>${item.trim()}</strong>`)
       }
     }
   }
@@ -189,9 +190,7 @@ function parseMeal(meal: RawMeal): Meal {
       .filter((m) => !exclude.some((exclusion) => m.startsWith(exclusion)))
       .filter((m) => !!m)
       .map((item) => {
-        // reverse the actual items in the menu, since for some reason they're presented with the
-        // actual entree item last most of the time
-        // and strip leading ampersands from items
+        // strip leading ampersands from items
         const titleAndItems = item.split(': ')
         const title = titleAndItems[0]
         const items = titleAndItems[1]
