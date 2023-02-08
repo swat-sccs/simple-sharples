@@ -81,6 +81,7 @@ function stripHtmlTags(s: string): string {
 
 function sortMains(lst: string[]): string[] {
   const keywords = [
+    'taco',
     'chicken',
     'steak',
     'beef',
@@ -90,6 +91,7 @@ function sortMains(lst: string[]): string[] {
     'bacon',
     'sausage',
     'pork',
+    'cod',
     'meatball',
     'tilapia',
     'salmon',
@@ -97,6 +99,10 @@ function sortMains(lst: string[]): string[] {
     'pizza',
     'pasta',
     'fried rice',
+    'waffles',
+    'french toast',
+    'aloo gobi',
+    'vindaloo'
   ]
 
   const items = new Set(lst)
