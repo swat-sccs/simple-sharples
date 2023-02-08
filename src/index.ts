@@ -99,6 +99,7 @@ function sortMains(lst: string[]): string[] {
     'pizza',
     'pasta',
     'fried rice',
+    'pancakes',
     'waffles',
     'french toast',
     'aloo gobi',
