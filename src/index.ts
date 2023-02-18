@@ -91,10 +91,13 @@ function sortMains(lst: string[]): string[] {
     'bacon',
     'sausage',
     'pork',
+    'lamb',
     'cod',
+    'pollock',
     'meatball',
     'tilapia',
     'salmon',
+    'crab',
     'wing',
     'pizza',
     'pasta',
@@ -103,7 +106,9 @@ function sortMains(lst: string[]): string[] {
     'waffles',
     'french toast',
     'aloo gobi',
-    'vindaloo'
+    'vindaloo',
+    'masala',
+    'curry'
   ]
 
   const items = new Set(lst)
